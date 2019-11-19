@@ -1,7 +1,7 @@
 {
     "name": "@mojaloop/oracle-shared-library",
     "version": "8.5.0-snapshot",
-    "description": "Shared library to create Oracles",
+    "description": "Shared library to create Oracles.",
     "license": "Apache-2.0",
     "author": "Bank of Tanzania",
     "contributors": [
