@@ -1,0 +1,5 @@
+{
+  "PORT": 3030,
+  "HOSTNAME": "http://shared-als-oracle.local",
+  "DATABASE_URI" : "mysql://shared-oracle:password@localhost:3306/shared-oracle"
+}
