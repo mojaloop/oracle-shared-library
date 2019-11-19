@@ -42,7 +42,7 @@ Test('/participants', async function (participantTests) {
           path: '/participants',
           operation: 'post'
         }, function (error, mock) {
-          const newRequest = Object.assign({}, mock.request, { headers: { 'fspiop-source': 'source', date: 'date', 'Content-Type': 'application/json', accept: 'application/json' } })
+          const newRequest = Object.assign({}, mock.request, { headers: { 'fspiop-source': 'source', date: 'date', 'Content-Type': 'application/vnd.interoperability.participants+json;version=1.0', accept: 'application/vnd.interoperability.participants+json;version=1' } })
           newRequest.body.partyList = [newRequest.body.partyList[0]]
           mock.request = newRequest
 
@@ -68,7 +68,7 @@ Test('/participants', async function (participantTests) {
         options.payload = mock.request.formData
         // Set the Content-Type as application/x-www-form-urlencoded
         options.headers = options.headers || {}
-        options.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        options.headers['Content-Type'] = 'application/vnd.interoperability.participants+json;version=1.0'
         options.headers['fspiop-source'] = 'source'
       }
       // If headers are present, set the headers.
