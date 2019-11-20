@@ -1,6 +1,6 @@
 {
     "name": "@mojaloop/oracle-shared-library",
-    "version": "8.5.0-snapshot",
+    "version": "8.5.0",
     "description": "Shared library to create Oracles",
     "license": "Apache-2.0",
     "author": "Bank of Tanzania",
@@ -11,9 +11,6 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:mojaloop/oracle-shared-library.git"
-    },
-    "config": {
-        "knex": "--knexfile ./config/knexfile.js"
     },
     "bugs": "https://github.com/mojaloop/oracle-shared-library/issues",
     "publishConfig": {

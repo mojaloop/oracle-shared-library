@@ -707,6 +707,9 @@
         ],
         "operationId": "ParticipantsPost",
         "deprecated": false,
+        "consumes": [
+          "application/vnd.interoperability.participants+json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -1017,7 +1020,8 @@
       "properties": {
         "requestId": {
           "description": "The ID of the request, decided by the client. Used for identification of the callback from the server.",
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "partyList": {
           "description": "List of PartyIdInfo elements that the client would like to update or create FSP information about.",
