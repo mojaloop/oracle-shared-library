@@ -17,9 +17,9 @@
         "registry": "https://registry.npmjs.org"
     },
     "dependencies": {
+        "@hapi/hapi": "^19.1.1",
         "@mojaloop/central-services-logger": "8.1.2",
         "boom": "7.3.0",
-        "@hapi/hapi": "18.4.0",
         "hapi-openapi": "1.2.4"
     },
     "devDependencies": {
@@ -49,8 +49,8 @@
         "test:coverage": "nyc --reporter=lcov --reporter=text-summary tapes -- 'test/unit/**/**.test.js'",
         "test:coverage-check": "npm run test:coverage && nyc check-coverage",
         "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.json'",
-        "audit:resolve": "SHELL=sh resolve-audit",
-        "audit:check": "SHELL=sh check-audit",
+        "audit:resolve": "SHELL=sh resolve-audit --production",
+        "audit:check": "SHELL=sh check-audit --production",
         "dep:check": "npx ncu -e 2",
         "dep:update": "npx ncu -u"
     },
