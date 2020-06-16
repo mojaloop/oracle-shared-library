@@ -1,6 +1,6 @@
 {
     "name": "@mojaloop/oracle-shared-library",
-    "version": "8.5.0",
+    "version": "10.4.0",
     "description": "Shared library to create Oracles",
     "license": "Apache-2.0",
     "author": "Bank of Tanzania",
@@ -17,10 +17,10 @@
         "registry": "https://registry.npmjs.org"
     },
     "dependencies": {
-        "@hapi/hapi": "19.1.1",
+        "@hapi/hapi": "18.4.1",
         "@mojaloop/central-services-logger": "10.4.0",
         "boom": "7.3.0",
-        "hapi-openapi": "2.0.2"
+        "hapi-openapi": "1.2.4"
     },
     "devDependencies": {
         "faucet": "0.0.1",
