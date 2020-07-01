@@ -17,7 +17,7 @@
         "registry": "https://registry.npmjs.org"
     },
     "dependencies": {
-        "@hapi/hapi": "19.1.1",
+        "@hapi/hapi": "18.4.1",
         "@mojaloop/central-services-logger": "10.4.0",
         "boom": "7.3.0",
         "hapi-openapi": "2.0.2"
