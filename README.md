@@ -4,7 +4,7 @@
 Shared code for Account Lookup Oracles
 
 - [Deployment](#deployment)
-- [Environmental_Variables](#Environmental variables)
+- [Environment Variables](#Environment-variables)
 - [Usage](#usage)
 - [Tests](#tests)
 
@@ -12,9 +12,9 @@ Shared code for Account Lookup Oracles
 
 TBA
 
-## Environmental_Variables
+## Environment Variables
 
-Currently all is set into the config.
+Currently config is set in `./config/default.json`
 
 ## Usage
 
