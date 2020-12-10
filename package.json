@@ -1,6 +1,6 @@
 {
     "name": "@mojaloop/oracle-shared-library",
-    "version": "10.4.0",
+    "version": "11.0.0",
     "description": "Shared library to create Oracles",
     "license": "Apache-2.0",
     "author": "Bank of Tanzania",
