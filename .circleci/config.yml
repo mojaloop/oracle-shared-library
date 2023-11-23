@@ -16,8 +16,7 @@ defaults_Dependencies: &defaults_Dependencies |
   apk --no-cache add openssh-client
   apk --no-cache add bash
   apk add --no-cache -t build-dependencies make gcc g++ python libtool autoconf automake
-  npm config set unsafe-perm true
-  npm install -g node-gyp
+  apk --no-cache add librdkafka-dev
 
 defaults_awsCliDependencies: &defaults_awsCliDependencies |
   apk --no-cache add \
@@ -64,6 +63,16 @@ defaults_slack_announcement: &defaults_slack_announcement
       \"text\": \"*${CIRCLE_PROJECT_REPONAME}* - Release \`${CIRCLE_TAG}\`: https://github.com/mojaloop/${CIRCLE_PROJECT_REPONAME}/releases/tag/${CIRCLE_TAG}\"
     }"
 
+defaults_display_versions: &defaults_display_versions
+  name: Display Versions
+  command: |
+    echo "What is the active version of Nodejs?"
+    echo "node: $(node --version)"
+    echo "yarn: $(yarn --version)"
+    echo "npm: $(npm --version)"
+    echo "nvm: $(nvm --version)"
+
+
 jobs:
   setup:
     <<: *defaults_working_directory
@@ -73,6 +82,8 @@ jobs:
           name: Install general dependencies
           command: *defaults_Dependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - run:
           name: Update NPM install
           command: npm install
@@ -89,6 +100,8 @@ jobs:
           name: Install general dependencies
           command: *defaults_Dependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -102,7 +115,7 @@ jobs:
           command: npm -s run test:xunit > ./test/results/tape.xml
       - store_artifacts:
           path: ./test/results
-          prefix: test
+          destination: test
       - store_test_results:
           path: ./test/results
 
@@ -117,6 +130,8 @@ jobs:
           name: Install AWS CLI dependencies
           command: *defaults_awsCliDependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -124,18 +139,18 @@ jobs:
           command: npm -s run test:coverage-check
       - store_artifacts:
           path: coverage
-          prefix: test
+          destination: test
       - store_test_results:
           path: coverage/lcov.info
       - run:
           name: Copy code coverage to SonarQube
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ];
+            if [ "${CIRCLE_BRANCH}" == "main" ];
             then
                 echo "Sending lcov.info to SonarQube..."
                 aws s3 cp coverage/lcov.info $AWS_S3_DIR_SONARQUBE/$CIRCLE_PROJECT_REPONAME/lcov.info
             else
-                echo "Not a release (env CIRCLE_BRANCH != 'master'), skipping sending lcov.info to SonarQube."
+                echo "Not a release (env CIRCLE_BRANCH != 'main'), skipping sending lcov.info to SonarQube."
             fi
 
   vulnerability-check:
@@ -146,6 +161,8 @@ jobs:
           name: Install general dependencies
           command: *defaults_Dependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -153,10 +170,10 @@ jobs:
           command: mkdir -p ./audit/results
       - run:
           name: Check for new npm vulnerabilities
-          command: npm run audit:check --silent -- --json > ./audit/results/auditResults.json
+          command: npm run audit:check -- -o json > ./audit/results/auditResults.json
       - store_artifacts:
           path: ./audit/results
-          prefix: audit
+          destination: audit
 
   audit-licenses:
     <<: *defaults_working_directory
@@ -168,6 +185,8 @@ jobs:
       - run:
           <<: *defaults_license_scanner
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -175,7 +194,7 @@ jobs:
           command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
       - store_artifacts:
           path: /tmp/license-scanner/results
-          prefix: licenses
+          destination: licenses
 
   build-snapshot:
     <<: *defaults_working_directory
@@ -185,6 +204,8 @@ jobs:
           name: Install general dependencies
           command: *defaults_Dependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - run:
           name: setup environment vars for SNAPSHOT release
           command: |
@@ -196,7 +217,7 @@ jobs:
       - run:
           <<: *defaults_slack_announcement
 
-  build:
+  build-local:
     <<: *defaults_working_directory
     <<: *defaults_docker_node
     steps:
@@ -204,6 +225,8 @@ jobs:
           name: Install general dependencies
           command: *defaults_Dependencies
       - checkout
+      - run:
+          <<: *defaults_display_versions
       - run:
           name: setup environment vars for LATEST release
           command: |
@@ -286,7 +309,7 @@ workflows:
             branches:
               ignore:
                 - /.*/
-      - build:
+      - build-local:
           context: org-global
           requires:
             - setup
